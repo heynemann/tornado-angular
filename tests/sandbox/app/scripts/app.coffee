@@ -19,13 +19,14 @@ angular
   ])
   .config ($routeProvider, $locationProvider) ->
     $routeProvider
-      .when '/web/',
+      .when '/',
         templateUrl: 'views/main.html'
         controller: 'MainCtrl'
-      .when '/web/about',
+      .when '/about',
         templateUrl: 'views/about.html'
         controller: 'AboutCtrl'
-      .otherwise
-        redirectTo: '/web/'
+      .when '/test/route/view/with/many/paths',
+        templateUrl: 'views/test-route.html'
+        controller: 'TestRouteCtrl'
 
     $locationProvider.html5Mode(true)

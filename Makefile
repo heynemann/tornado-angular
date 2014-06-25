@@ -15,6 +15,8 @@ no_targets__:
 
 # install all dependencies (do not forget to create a virtualenv first)
 setup:
+	@bundle install
+	@cd tests/sandbox/ && npm install . && bower install
 	@pip install -U -e .\[tests\]
 
 # test your application (tests in the tests/ directory)

@@ -11,7 +11,7 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="{{ static_url('styles/main.css') }}">
     <!-- endbuild -->
   </head>
   <body ng-app="sandboxApp">
@@ -23,9 +23,9 @@
     <div class="container">
       <div class="header">
         <ul class="nav nav-pills pull-right">
-          <li class="active"><a ng-href="/web/">Home</a></li>
-          <li><a ng-href="/web/about">About</a></li>
-          <li><a ng-href="/web/">Contact</a></li>
+          <li class="active"><a ng-href="{{ get_url('/') }}">Home</a></li>
+          <li><a ng-href="{{ get_url('/about') }}">About</a></li>
+          <li><a ng-href="{{ get_url('/test/route/view/with/many/paths') }}">Contact</a></li>
         </ul>
         <h3 class="text-muted">sandbox</h3>
       </div>
@@ -80,10 +80,14 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
-        <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="{{ static_url('config.js') }}"></script>
+    <script src="{{ static_url('scripts/app.js') }}"></script>
+    <script src="{{ static_url('scripts/controllers/main.js') }}"></script>
+    <script src="{{ static_url('scripts/controllers/about.js') }}"></script>
+    <script src="{{ static_url('scripts/directives/test.js') }}"></script>
+    <script src="{{ static_url('scripts/services/test.js') }}"></script>
+    <script src="{{ static_url('scripts/controllers/test-route.js') }}"></script>
+    <!-- endbuild -->
 </body>
 </html>
