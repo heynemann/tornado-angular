@@ -32,5 +32,5 @@ coverage-html: unit
 tox:
 	@tox
 
-#docs:
-	#@cd tornado_angular/docs && make html && open _build/html/index.html
+run:
+	@tornado_angular -d -vv -c ./tornado_angular/config/local.conf

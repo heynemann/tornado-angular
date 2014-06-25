@@ -1,12 +1,12 @@
 'use strict'
 
 ###*
- # @ngdoc overview
- # @name sandboxApp
- # @description
- # # sandboxApp
- #
- # Main module of the application.
+# @ngdoc overview
+# @name sandboxApp
+# @description
+# # sandboxApp
+#
+# Main module of the application.
 ###
 angular
   .module('sandboxApp', [
@@ -17,14 +17,15 @@ angular
     'ngSanitize',
     'ngTouch'
   ])
-  .config ($routeProvider) ->
+  .config ($routeProvider, $locationProvider) ->
     $routeProvider
-      .when '/',
+      .when '/web/',
         templateUrl: 'views/main.html'
         controller: 'MainCtrl'
-      .when '/about',
+      .when '/web/about',
         templateUrl: 'views/about.html'
         controller: 'AboutCtrl'
       .otherwise
-        redirectTo: '/'
+        redirectTo: '/web/'
 
+    $locationProvider.html5Mode(true)

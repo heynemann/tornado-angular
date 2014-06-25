@@ -52,6 +52,8 @@ tornado-angular is an opinionated way of distributing angular applications with 
     install_requires=[
         # add your dependencies here
         # remember to use 'package-name>=x.y.z,<x.y+1.0' notation (this way you get bugfixes)
+        'cow-framework',
+        'pycurl',
     ],
     extras_require={
         'tests': tests_require,
@@ -59,7 +61,7 @@ tornado-angular is an opinionated way of distributing angular applications with 
     entry_points={
         'console_scripts': [
             # add cli scripts here in this form:
-            # 'tornado_angular=tornado_angular.cli:main',
+            'tornado_angular=tornado_angular.server:main',
         ],
     },
 )
