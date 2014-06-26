@@ -149,9 +149,7 @@ class TornadoAngularServer(Server):
         return Config
 
     def get_web_allowed_config(self):
-        return [
-            'ANGULAR_ROOT',
-        ]
+        return []
 
     def get_api_plugins(self):
         return []
