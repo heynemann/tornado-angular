@@ -104,7 +104,33 @@ class MyShinyAppServer(Server):
     def api_before_end(self, io_loop):
         pass
 
+def main():
+    MyShinyAppServer.run()
+
 if __name__ == '__main__':
-    server = MyShinyAppServer()
-    server.start()
+    main()
+```
+
+How do I run my angular/tornado app?
+------------------------------------
+
+In your setup.py file, include the following:
+
+```python
+    entry_points={
+        'console_scripts': [
+            'my_shiny_app=my_shiny_app.server:main',
+        ],
+    },
+```
+
+Now in order to run your app, all you have to do is install it and run the `my_shiny_app` command, like this:
+
+```bash
+$ pip install -e .
+$ my_shiny_app -vvv -d -c ./my_shiny_app/config/local.conf -p 8000
+
+2014-06-25 19:07:43,851 - root - INFO - Loading configuration file at /home/user/my-shiny-app/my_shiny_app/config/local.conf...
+2014-06-25 19:07:43,851 - root - INFO - Using configuration file at /home/user/my-shiny-app/my_shiny_app/config/local.conf.
+2014-06-25 19:07:43,852 - root - INFO - -- Server started listening in 0.0.0.0:8000 --
 ```
