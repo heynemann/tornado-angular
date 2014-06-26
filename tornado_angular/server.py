@@ -8,6 +8,7 @@
 # http://www.opensource.org/licenses/MIT-license
 # Copyright (c) 2014 Bernardo Heynemann heynemann@gmail.com
 
+import sys
 from os.path import abspath, join
 
 from cow.server import Server
@@ -31,9 +32,6 @@ def main():
 
 
 class VersionHandler(RequestHandler):
-    def get_version(self):
-        return __version__
-
     def get(self):
         self.write(self.get_version())
 
@@ -47,6 +45,9 @@ class TornadoAngularServer(Server):
         return {
             'no_keep_alive': False
         }
+
+    def get_version(self):
+        return __version__
 
     def get_settings(self):
         settings = super(TornadoAngularServer, self).get_settings()
@@ -68,6 +69,9 @@ class TornadoAngularServer(Server):
 
     def get_web_app_name(self):
         return "sandboxApp"
+
+    def config_parser(self, parser):
+        parser.add_argument('--version', action='store_true', default=False, help="Displays application's current version")
 
     def get_web_handlers(self):
         angular_path = abspath(self.config.ANGULAR_ROOT)
@@ -135,12 +139,21 @@ class TornadoAngularServer(Server):
         self.api_after_start(io_loop)
         self.application.allowed_configuration = self.get_web_allowed_config()
         self.application.web_app_name = self.get_web_app_name()
+        self.application.version = self.get_version()
 
     def api_before_end(self, io_loop):
         pass
 
     def before_end(self, io_loop):
         self.api_before_end(io_loop)
+
+    def start(self, args=None):
+        options = self.parse_arguments(args)
+        if options.version:
+            print ("%s - version %s" % (self.get_server_name(), self.get_version()))
+            sys.exit(0)
+
+        super(TornadoAngularServer, self).start(args)
 
 if __name__ == '__main__':
     main()
