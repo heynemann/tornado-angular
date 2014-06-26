@@ -8,6 +8,7 @@
 # http://www.opensource.org/licenses/MIT-license
 # Copyright (c) 2014 Bernardo Heynemann heynemann@gmail.com
 
+import re
 
 from tornado_angular.handlers import RequestHandler
 from tornado_angular.serialize import dumps
@@ -62,7 +63,9 @@ class AngularRedirectHandler(AngularIndexHandler):
             super(AngularRedirectHandler, self).get()
             return
 
-        self.redirect("/web/%s" % url.replace('web/', '').lstrip('/'))
+        url = re.sub(r"^/?web/?", "", url)
+
+        self.redirect("/web/%s" % url.lstrip('/'))
 
 
 class AngularConfigHandler(AngularIndexHandler):
