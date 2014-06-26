@@ -30,9 +30,10 @@ unit:
 coverage-html: unit
 	@coverage html -d cover
 
-
 tox:
 	@tox
 
-run:
-	@tornado_angular -d -vv -c ./tornado_angular/config/local.conf
+run: honcho
+
+honcho:
+	@honcho start
