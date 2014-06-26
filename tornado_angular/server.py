@@ -12,6 +12,7 @@ import sys
 from os.path import abspath, join
 
 from cow.server import Server
+import cow.handlers.healthcheck as healthcheck
 from tornado.httpclient import AsyncHTTPClient
 import tornado.web
 
@@ -116,6 +117,16 @@ class TornadoAngularServer(Server):
         )
 
         return tuple(self.get_web_handlers() + handlers)
+
+    def get_app(self):
+        handlers = [
+            ('/healthcheck/?', healthcheck.HealthCheckHandler),
+        ]
+
+        handlers = handlers + list(self.get_handlers())
+        settings = self.get_settings()
+
+        return tornado.web.Application(handlers, **settings)
 
     def get_config(self):
         return Config
