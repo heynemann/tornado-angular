@@ -62,7 +62,7 @@ class TornadoAngularServer(Server):
 
     def get_api_handlers(self):
         return [
-            ('bla/?', VersionHandler),
+            ('version/?', VersionHandler),
         ]
 
     def get_web_prefix(self):
@@ -151,7 +151,6 @@ class TornadoAngularServer(Server):
     def get_web_allowed_config(self):
         return [
             'ANGULAR_ROOT',
-            'FOO',
         ]
 
     def get_api_plugins(self):
