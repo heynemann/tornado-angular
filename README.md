@@ -7,6 +7,8 @@ Creating a new app
 ------------------
 
 The expected directory structure for tornado-angular is as follows:
+
+```
     my_app_name
     ├── setup.py
     ├── other files(Makefile, Procfile, travis, etc)
@@ -60,3 +62,4 @@ The expected directory structure for tornado-angular is as follows:
     └─── tests
          ├── __init__.py
          └── test_something.py
+```
