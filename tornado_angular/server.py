@@ -34,7 +34,7 @@ def main():
 
 class VersionHandler(RequestHandler):
     def get(self):
-        self.write(self.get_version())
+        self.write(self.application.version)
 
 
 class TornadoAngularServer(Server):
