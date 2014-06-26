@@ -95,7 +95,7 @@ class TornadoAngularServer(Server):
 
         handlers.append((r'/web/views/(.+)', AngularViewHandler))
         handlers.append((r'/web/config.js', AngularConfigHandler))
-        handlers.append((r'/web/.+', AngularIndexHandler))
+        handlers.append((r'/web.+', AngularIndexHandler))
 
         return handlers
 
