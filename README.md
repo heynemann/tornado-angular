@@ -63,3 +63,48 @@ The expected directory structure for tornado-angular is as follows:
          ├── __init__.py
          └── test_something.py
 ```
+
+Creating a server
+-----------------
+
+Just inherit from `tornado_angular.server` and override the methods that you need to change.
+
+```python
+class MyShinyAppServer(Server):
+    def get_api_handlers(self):
+        return [
+            ('do-something/?', MyShinyHandler),  # actually gets mapped to /api/do-something/?
+        ]
+
+    def get_api_prefix(self):
+        return "api"
+
+    def get_web_app_name(self):
+        return "my-shiny-app"
+
+    # things listed here will go from your config file to the ConfigConst module in angular
+    # to include the ConfigConst module just add to your index.html:
+    # <script src="{{ static_url('config.js') }}"></script>
+    def get_web_allowed_config(self):
+        return [
+            'BAZ',
+            'FOO',
+            'BAR',
+        ]
+
+    # cow framework plug-ins that your api requires
+    def get_api_plugins(self):
+        return []
+
+    # any initialization you need to perform after the server is up
+    def api_after_start(self, io_loop):
+        pass
+
+    # any destruction you need to perform before the server goes down
+    def api_before_end(self, io_loop):
+        pass
+
+if __name__ == '__main__':
+    server = MyShinyAppServer()
+    server.start()
+```
