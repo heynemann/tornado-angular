@@ -65,6 +65,9 @@ class TornadoAngularServer(Server):
             ('bla/?', VersionHandler),
         ]
 
+    def get_web_prefix(self):
+        return "web"
+
     def get_api_prefix(self):
         return "api"
 
@@ -74,28 +77,42 @@ class TornadoAngularServer(Server):
     def config_parser(self, parser):
         parser.add_argument('--version', action='store_true', default=False, help="Displays application's current version")
 
-    def get_web_handlers(self):
-        angular_path = abspath(self.config.ANGULAR_ROOT)
+    def get_items_path(self):
+        if self.debug:
+            angular_path = abspath(self.config.ANGULAR_ROOT)
+            items = (
+                (r'bower_components', join(angular_path, 'bower_components')),
+                (r'scripts', join(angular_path, '.tmp/scripts')),
+                (r'styles', join(angular_path, '.tmp/styles')),
+                (r'images', join(angular_path, 'app/images')),
+            )
+        else:
+            angular_path = abspath(join(self.config.ANGULAR_ROOT, 'dist'))
+            items = (
+                (r'bower_components', join(angular_path, 'bower_components')),
+                (r'scripts', join(angular_path, 'scripts')),
+                (r'styles', join(angular_path, 'styles')),
+                (r'images', join(angular_path, 'images')),
+            )
 
-        items = (
-            (r'bower_components', join(angular_path, 'bower_components')),
-            (r'scripts', join(angular_path, '.tmp/scripts')),
-            (r'styles', join(angular_path, '.tmp/styles')),
-            (r'images', join(angular_path, 'app/images')),
-        )
+        return items
+
+    def get_web_handlers(self):
+        items = self.get_items_path()
 
         handlers = []
+        web_prefix = self.get_web_prefix()
 
         for url, path in items:
             handlers.append((
-                r"/web/%s/(.+)" % url,
+                r"/%s/%s/(.+)" % (web_prefix, url),
                 tornado.web.StaticFileHandler,
                 {'path': path}
             ))
 
-        handlers.append((r'/web/views/(.+)', AngularViewHandler))
-        handlers.append((r'/web/config.js', AngularConfigHandler))
-        handlers.append((r'/web.+', AngularIndexHandler))
+        handlers.append((r'/%s/views/(.+)' % web_prefix, AngularViewHandler))
+        handlers.append((r'/%s/config.js' % web_prefix, AngularConfigHandler))
+        handlers.append((r'/%s.+' % web_prefix, AngularIndexHandler))
 
         return handlers
 
@@ -147,6 +164,7 @@ class TornadoAngularServer(Server):
         pass
 
     def after_start(self, io_loop):
+        self.application.debug = self.debug
         self.api_after_start(io_loop)
         self.application.allowed_configuration = self.get_web_allowed_config()
         self.application.web_app_name = self.get_web_app_name()

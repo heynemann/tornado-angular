@@ -46,14 +46,21 @@ class AngularHandler(RequestHandler):
 
 class AngularIndexHandler(AngularHandler):
     def get(self):
-        html = self.render_path("app/index.html")
+        if self.application.debug:
+            html = self.render_path("app/index.html")
+        else:
+            html = self.render_path("dist/index.html")
+
         html = html.replace('<head>', '<head>\n    <base href="/web/" />')
         self.finish(html)
 
 
 class AngularViewHandler(AngularHandler):
     def get(self, path):
-        html = self.render_path("app/views/%s" % path)
+        if self.application.debug:
+            html = self.render_path("app/views/%s" % path)
+        else:
+            html = self.render_path("dist/views/%s" % path)
         self.finish(html)
 
 
