@@ -21,7 +21,6 @@ from tornado_angular.handlers import RequestHandler
 from tornado_angular.handlers.angular_handler import (
     AngularIndexHandler,
     AngularRedirectHandler,
-    AngularViewHandler,
     AngularConfigHandler
 )
 from tornado_angular.config import Config
@@ -85,6 +84,7 @@ class TornadoAngularServer(Server):
                 (r'scripts', join(angular_path, '.tmp/scripts')),
                 (r'styles', join(angular_path, '.tmp/styles')),
                 (r'images', join(angular_path, 'app/images')),
+                (r'views', join(angular_path, 'app/views')),
             )
         else:
             angular_path = abspath(join(self.config.ANGULAR_ROOT, 'dist'))
@@ -93,6 +93,7 @@ class TornadoAngularServer(Server):
                 (r'scripts', join(angular_path, 'scripts')),
                 (r'styles', join(angular_path, 'styles')),
                 (r'images', join(angular_path, 'images')),
+                (r'views', join(angular_path, 'views')),
             )
 
         return items
@@ -110,7 +111,6 @@ class TornadoAngularServer(Server):
                 {'path': path}
             ))
 
-        handlers.append((r'/%s/views/(.+)' % web_prefix, AngularViewHandler))
         handlers.append((r'/%s/config.js' % web_prefix, AngularConfigHandler))
         handlers.append((r'/%s.+' % web_prefix, AngularIndexHandler))
 
