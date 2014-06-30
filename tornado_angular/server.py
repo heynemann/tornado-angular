@@ -67,9 +67,6 @@ class TornadoAngularServer(Server):
     def get_web_prefix(self):
         return "web"
 
-    def get_api_prefix(self):
-        return "api"
-
     def get_web_app_name(self):
         return "sandboxApp"
 
@@ -122,12 +119,8 @@ class TornadoAngularServer(Server):
         ]
 
         api_handlers = list(self.get_api_handlers())
-        api_prefix = self.get_api_prefix()
-
         for api_handler in api_handlers:
-            handler = list(api_handler)
-            handler[0] = r"/%s/%s" % (api_prefix, handler[0].lstrip('/'))
-            handlers.append(handler)
+            handlers.append(api_handler)
 
         handlers.append(
             ('/api(.*)', tornado.web.ErrorHandler, { "status_code": 404 } ),
