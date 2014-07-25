@@ -80,7 +80,7 @@ class TornadoAngularServer(Server):
                 (r'bower_components', join(angular_path, 'bower_components')),
                 (r'scripts', join(angular_path, '.tmp/scripts')),
                 (r'styles', join(angular_path, '.tmp/styles')),
-                (r'images', join(angular_path, 'app/images')),
+                (r'images', join(angular_path, '.tmp/images')),
                 (r'views', join(angular_path, 'app/views')),
             )
         else:
