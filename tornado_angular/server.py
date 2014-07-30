@@ -103,7 +103,7 @@ class TornadoAngularServer(Server):
 
         for url, path in items:
             handlers.append((
-                r"/%s/%s/(.+)" % (web_prefix, url),
+                r"/?%s/%s/(.+)" % (web_prefix, url),
                 tornado.web.StaticFileHandler,
                 {'path': path}
             ))
