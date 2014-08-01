@@ -20,7 +20,7 @@ class AngularHandler(RequestHandler):
         return self.application.config
 
     def static_url(self, path):
-        return "/web/%s" % (path.lstrip('/'))
+        return '/web/%s' % (path.lstrip('/'))
 
     def get_template_namespace(self):
         namespace = super(AngularHandler, self).get_template_namespace()
@@ -28,7 +28,7 @@ class AngularHandler(RequestHandler):
         return namespace
 
     def get_angular_url(self, path):
-        return "/web/%s" % (path.lstrip('/'))
+        return '/web/%s' % (path.lstrip('/'))
 
     def render_path(self, path, **kwargs):
         template_path = self.application.config.ANGULAR_ROOT
@@ -47,9 +47,9 @@ class AngularHandler(RequestHandler):
 class AngularIndexHandler(AngularHandler):
     def get(self):
         if self.application.debug:
-            html = self.render_path("app/index.html")
+            html = self.render_path('app/index.html')
         else:
-            html = self.render_path("dist/index.html")
+            html = self.render_path('dist/index.html')
 
         html = html.replace('<head>', '<head>\n    <base href="/web/" />')
         self.finish(html)
@@ -58,42 +58,44 @@ class AngularIndexHandler(AngularHandler):
 class AngularViewHandler(AngularHandler):
     def get(self, path):
         if self.application.debug:
-            html = self.render_path("app/views/%s" % path)
+            html = self.render_path('app/views/%s' % path)
         else:
-            html = self.render_path("dist/views/%s" % path)
+            html = self.render_path('dist/views/%s' % path)
         self.finish(html)
 
 
 class AngularRedirectHandler(AngularIndexHandler):
     def get(self, url):
-        if url == "web/":
+        if url == 'web/':
             super(AngularRedirectHandler, self).get()
             return
 
-        url = re.sub(r"^/?web/?", "", url)
+        url = re.sub(r'^/?web/?', '', url)
 
-        self.redirect("/web/%s" % url.lstrip('/'))
+        self.redirect('/web/%s' % url.lstrip('/'))
 
 
 class AngularConfigHandler(AngularIndexHandler):
     def to_camel(self, name):
-        capital = "".join([word.strip().capitalize() for word in name.split('_') if word])
-        return "%s%s" % (capital[0].lower(), "".join(capital[1:]))
+        capital = ''.join([word.strip().capitalize() for word in name.split('_') if word])
+        return '%s%s' % (capital[0].lower(), ''.join(capital[1:]))
 
     def get(self):
         items = []
 
         for config in self.application.allowed_configuration:
-            items.append("%s: %s" % (self.to_camel(config), dumps(self.config[config])))
+            items.append('%s: %s' % (self.to_camel(config), dumps(self.config[config])))
 
-        template = """
+        template = '''
 'use strict';
 angular.module('%s').constant('ConfigConst', {
 %s
 });
-        """.strip('') % (
+        '''.strip('') % (
             self.application.web_app_name,
-            ",\n".join(items)
+            ',\n'.join(items)
         )
+
+        self.set_header('Content-Type', 'application/javascript')
         self.write(template)
         self.finish()
